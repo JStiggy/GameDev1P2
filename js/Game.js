@@ -2,79 +2,86 @@ var BookWyrm = BookWyrm || {};
 
 BookWyrm.Game = function(){};
  
- //Main Gameplay State
+//Main Gameplay State
 BookWyrm.Game.prototype = {
     create:create,
     update:update    
 };
 
-//List of all carts in the state, useful for collsion and determining
-//if the object can be be dragged around the game
-var carts;
-var movingGameObject = null;
+//List of all interactable objects in the stage
+var interactableObjects;
 
-var startX;
-var startY;
-var endX;
-var endY;
-
+/**
+* This is the grid representing the level. As objects are added to the level, 
+* they will add a 1 to the proper spot. 1 indicates inpassable, 0 indicates 
+* passable. Note, the grid uses y as its first index grid[y][x] is proper usage
+* Since the game scrolls only vertically, this means we can just add new subarrays
+* to the bottom instead of having to append new values to each sub array which 
+* could get really messy. To increase vertical length, add a new subarray
+**/
+var grid = [
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
 
 function create()
 {
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
-    carts = BookWyrm.game.add.group();
-    carts.add(new Cart(BookWyrm.game, 600, 120))
-    carts.add(new Cart(BookWyrm.game, 0, 0))
+    interactableObjects = BookWyrm.game.add.group();
+    interactableObjects.add(new Cart(BookWyrm.game, 5, 1, 1));
+    interactableObjects.add(new Cart(BookWyrm.game, 0, 0, 0));
+    interactableObjects.add(new Chair(BookWyrm.game, 2, 1));
+    interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
+    interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
+    console.table(grid);
 }
 
 function update()
 {
-    this.physics.arcade.collide(carts, carts);
+
+    this.physics.arcade.collide(interactableObjects, interactableObjects); //I dont think this is needed as all interactables should never touch do to grid movement, but its nice to have just incase
 }
 
-function onClick (obj, pointer)
+/*
+* Check if a location can be moved to, if so move the  unit to the location
+* Note while the arguments are x,y,x,y the code uses y first
+*
+* @param x The starting x location of the unit
+* @param y The starting y location of the unit
+* @param xDestination The ending x location of the unit
+* @param yDestination The ending y location of the unit
+* @return Boolean if the movement was succesful
+*/
+
+function checkLocation(x, y, xDestination, yDestination) 
 {
-    console.log("onClick");
-    startX = BookWyrm.game.input.worldX;
-    startY = BookWyrm.game.input.worldY;
-
-    //Will Also inlude the player character
-    if(carts.contains(obj))
+    
+    if(grid[yDestination][xDestination] === 0)
     {
-        movingGameObject = obj;
-        console.log(movingGameObject.x)
-        BookWyrm.game.input.onUp.add(endSwipe, this);  
+        grid[yDestination][xDestination] = 1;
+        grid[y][x] = 0;
+        console.table(grid); //Debug tool, shows the grid in the console
+        return true;
+    }
+    else
+    {
+        return false
     }
 }
 
-function endSwipe(obj, pointer){
-    console.log("endSwipe " + startX + " " + startY);
-    endX = BookWyrm.game.input.worldX;
-    endY = BookWyrm.game.input.worldY;
-
-    var distX = startX-endX;
-    var distY = startY-endY;
-
-    if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80){
-        if(distX>0){
-            movingGameObject.x -= 120;
-        }
-        else
-        {
-            movingGameObject.x += 120;
-        }
-    }
-
-    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80){
-        if(distY>0)
-        {
-            movingGameObject.y -= 120;
-        }
-        else
-        {
-            movingGameObject.y += 120;
-        }
-    }
-
-    BookWyrm.game.input.onUp.remove(endSwipe, this);
+/*
+* Smoothly move a unit from its current position to it's destination position
+*
+* @param unit The unit that will be moved
+* @param xDestination The ending x location of the unit
+* @param yDestination The ending y location of the unit
+*
+*/
+function smoothMovement(unit)
+{
+  BookWyrm.game.add.tween(unit).to( { x: unit.xPos * 120, y: unit.yPos * 120 }, 1000, Phaser.Easing.linear, true);
 }
