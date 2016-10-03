@@ -1,5 +1,5 @@
 /*
-* Chair object, moves either horizontally or vertically
+* Player object, user controlled character, has no movememnt restrictions
 *
 * @param game The current Phaser Game instance
 * @param x The starting x location of the unit
@@ -7,15 +7,14 @@
 *
 */
 
-Chair = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120, y*120, 'chair');
+Player = function (game, x, y) {
+    Phaser.Sprite.call(this, game, x*120, y*120, 'player');
+
     //Enable input and physics
     this.inputEnabled = true;
-    this.events.onInputDown.add(onClickChair, this); 
+    this.events.onInputDown.add(onClickPlayer, this); 
     BookWyrm.game.physics.enable(this);
 
-    //Determines if the unit can move, set to false after moving once
-    this.canMove = true;
     //Used for keeping track of the location in the grid
     this.xPos = x;
     this.yPos = y;
@@ -24,8 +23,8 @@ Chair = function (game, x, y) {
     grid[y][x] = 1;
 };
 
-Chair.prototype = Object.create(Phaser.Sprite.prototype);
-Chair.prototype.constructor = Chair;
+Player.prototype = Object.create(Phaser.Sprite.prototype);
+Player.prototype.constructor = Player;
 
 //Values used for swiping
 var startX;
@@ -41,11 +40,11 @@ var endY;
 *
 */
 
-function onClickChair (obj, pointer)
+function onClickPlayer (obj, pointer)
 {
     startX = BookWyrm.game.input.worldX;
     startY = BookWyrm.game.input.worldY;
-    this.events.onInputUp.add(endSwipeChair, this);  
+    this.events.onInputUp.add(endSwipePlayer, this);  
 }
 
 /*
@@ -57,14 +56,14 @@ function onClickChair (obj, pointer)
 *
 */
 
-function endSwipeChair(obj, pointer){
+function endSwipePlayer(obj, pointer){
     endX = BookWyrm.game.input.worldX;
     endY = BookWyrm.game.input.worldY;
 
     var distX = startX-endX;
     var distY = startY-endY;
 
-    if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80 && this.canMove){
+    if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80){
         if(distX > 0 && checkLocation(this.xPos, this.yPos, this.xPos-1, this.yPos)){
             this.canMove = false;
             //this.x -= 120;
@@ -81,7 +80,7 @@ function endSwipeChair(obj, pointer){
         
     }
 
-    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80 && this.canMove){
+    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80){
         if(distY>0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos-1))
         {
             this.canMove = false;
@@ -98,5 +97,5 @@ function endSwipeChair(obj, pointer){
         }
     }
 
-    this.events.onInputUp.remove(endSwipeChair, this);
+    this.events.onInputUp.remove(endSwipePlayer, this);
 }

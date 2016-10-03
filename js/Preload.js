@@ -18,6 +18,8 @@ BookWyrm.Preload.prototype = {
     this.load.image('cart0', 'assets/tiles/CartV.png');
     this.load.image('cart1', 'assets/tiles/CartH.png');
     this.load.image('chair', 'assets/tiles/Chair.png');
+    this.load.image('player', 'assets/tiles/Player.png');
+    this.load.image('book', 'assets/tiles/Book.png');
   },
   create: function() {
     //Start the actual Game State

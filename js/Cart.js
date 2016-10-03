@@ -72,13 +72,13 @@ function endSwipe(obj, pointer){
         {
             //this.x -= 120;
             this.xPos--;
-            smoothMovement(this);
+            smoothMovement(this, 1000);
         }
         if (distX < 0 && checkLocation(this.xPos, this.yPos, this.xPos+1, this.yPos))
         {
             //this.x += 120;
             this.xPos++;
-            smoothMovement(this);
+            smoothMovement(this, 1000);
         }
     }
 
@@ -87,13 +87,13 @@ function endSwipe(obj, pointer){
         {
             //this.y -= 120;
             this.yPos--;
-            smoothMovement(this);
+            smoothMovement(this, 1000);
         }
         if(distY<0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos+1))
         {
             //this.y += 120;
             this.yPos++;
-            smoothMovement(this);
+            smoothMovement(this, 1000);
         }
     }
 
