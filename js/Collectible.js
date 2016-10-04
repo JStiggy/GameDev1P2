@@ -25,8 +25,6 @@ Collectible = function (game, x, y) {
 Collectible.prototype = Object.create(Phaser.Sprite.prototype);
 Collectible.prototype.constructor = Collectible;
 
-//Values used for swiping
-
 /*
 * Start a swipe command with the currently pressed object, if the player is adjacent to the book,
 * remove the book from play.
@@ -38,7 +36,7 @@ Collectible.prototype.constructor = Collectible;
 
 function onClickCollectible (obj, pointer)
 {
-    if(Math.abs(obj.xPos - player.xPos - player.yPos + obj.yPos) === 1)
+    if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130)
     {
         grid[obj.yPos][obj.xPos] = 0;
         obj.destroy();

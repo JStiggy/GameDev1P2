@@ -16,6 +16,10 @@ Chair = function (game, x, y) {
 
     //Determines if the unit can move, set to false after moving once
     this.canMove = true;
+    
+    //The number of miliseconds it takes the actor to move 1 tile (120 pixels)
+    this.movememntSpeed = 1000;
+
     //Used for keeping track of the location in the grid
     this.xPos = x;
     this.yPos = y;
@@ -67,16 +71,14 @@ function endSwipeChair(obj, pointer){
     if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80 && this.canMove){
         if(distX > 0 && checkLocation(this.xPos, this.yPos, this.xPos-1, this.yPos)){
             this.canMove = false;
-            //this.x -= 120;
             this.xPos--;
-            smoothMovement(this, 1000);
+            smoothMovement(this, this.movememntSpeed);
         }
         if (distX < 0 && checkLocation(this.xPos, this.yPos, this.xPos+1, this.yPos))
         {
             this.canMove = false;
-            //this.x += 120;
             this.xPos++;
-            smoothMovement(this, 1000);
+            smoothMovement(this, this.movememntSpeed);
         }
         
     }
@@ -85,16 +87,14 @@ function endSwipeChair(obj, pointer){
         if(distY>0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos-1))
         {
             this.canMove = false;
-            //this.y -= 120;
             this.yPos--;
-            smoothMovement(this, 1000);
+            smoothMovement(this, this.movememntSpeed);
         }
         if(distY<0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos+1))
         {
             this.canMove = false;
-            //this.y += 120;
             this.yPos++;
-            smoothMovement(this, 1000);
+            smoothMovement(this, this.movememntSpeed);
         }
     }
 

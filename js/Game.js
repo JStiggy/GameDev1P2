@@ -17,6 +17,7 @@ var collectibleObjects;
 
 //Player object used by other objects
 var player;
+var exit;
 
 /**
 * This is the grid representing the level. As objects are added to the level, 
@@ -40,10 +41,12 @@ var grid = [
 function create()
 {
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
+
     collectibleObjects = BookWyrm.game.add.group();
     collectibleObjects.add(new Collectible(BookWyrm.game, 4, 2));
 
     interactableObjects = BookWyrm.game.add.group();
+    interactableObjects.add(exit = new Exit(BookWyrm.game, 0, 5));
     interactableObjects.add(new Cart(BookWyrm.game, 5, 1, 1));
     interactableObjects.add(new Cart(BookWyrm.game, 0, 0, 0));
     interactableObjects.add(new Cart(BookWyrm.game, 3, 3 , 0));
@@ -51,8 +54,6 @@ function create()
     interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
     interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
     interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
-
-    //console.table(grid); //Debug tool, shows the grid in the console
 }
 
 function update()
@@ -78,12 +79,12 @@ function checkLocation(x, y, xDestination, yDestination)
     {
         grid[yDestination][xDestination] = 1;
         grid[y][x] = 0;
-        console.table(grid); //Debug tool, shows the grid in the console
+        //console.table(grid); //Debug tool, shows the grid in the console
         return true;
     }
     else
     {
-        return false
+        return false;
     }
 }
 
@@ -98,4 +99,52 @@ function checkLocation(x, y, xDestination, yDestination)
 function smoothMovement(unit, time)
 {
   BookWyrm.game.add.tween(unit).to( { x: unit.xPos * 120, y: unit.yPos * 120 }, time, Phaser.Easing.linear, true);
+}
+
+function movementHelper(unit){
+   if (unit.xPos !== unit.xDest && unit.xPos * 120 == unit.x && unit.yPos * 120 == unit.y)
+    {
+        if(unit.xPos < unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos+1, unit.yPos))
+        {
+            unit.xPos++;
+        } 
+        else if (unit.xPos < unit.xDest && grid[unit.yPos][unit.xPos+1] === 1)
+        {
+            unit.xDest = unit.xPos;
+        }
+
+        if(unit.xPos > unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos-1, unit.yPos))
+        {
+            unit.xPos--;
+        } 
+        else if (unit.xPos > unit.xDest && grid[unit.yPos][unit.xPos-1] === 1)
+        {
+            unit.xDest = unit.xPos;
+        }
+
+        smoothMovement(unit,1000);
+    } 
+
+    if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && unit.xPos * 120 == unit.x)
+    {
+        if(unit.yPos < unit.yDest && checkLocation(unit.xPos, unit.yPos, unit.xPos, unit.yPos+1))
+        {
+            unit.yPos++;
+        } 
+        else if (unit.yPos < unit.yDest && grid[unit.yPos+1][unit.xPos] === 1)
+        {
+            unit.yDest = unit.yPos;
+        }
+
+        if(unit.yPos > unit.yDest && checkLocation(unit.xPos, unit.yPos, unit.xPos, unit.yPos-1))
+        {
+            unit.yPos--;
+        } 
+        else if (unit.yPos > unit.yDest && grid[unit.yPos-1][unit.xPos] === 1)
+        {
+            unit.yDest = unit.yPos;
+        }
+
+        smoothMovement(unit,1000);
+    }
 }

@@ -19,9 +19,16 @@ Cart = function (game, x, y, d) {
     //The direction the cart moves in 1 is horizontal, 0 vertical
     this.direction = d;
    
+    //The number of miliseconds it takes the actor to move 1 tile (120 pixels)
+    this.movememntSpeed = 1000;
+
     //Used for keeping track of the location in the grid
     this.xPos = x;
     this.yPos = y;
+
+    //Allow for longer swipes
+    this.xDest = x;
+    this.yDest = y;
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
@@ -29,6 +36,11 @@ Cart = function (game, x, y, d) {
 
 Cart.prototype = Object.create(Phaser.Sprite.prototype);
 Cart.prototype.constructor = Cart;
+
+Cart.prototype.update = function() 
+{
+    movementHelper(this);
+}
 
 //Values used for swiping
 var startX;
@@ -46,8 +58,14 @@ var endY;
 
 function onClick (obj, pointer)
 {
-    startX = BookWyrm.game.input.worldX;
-    startY = BookWyrm.game.input.worldY;
+    //If the user taps on the object this will snap the unit ot the nearest tile
+    obj.xDest = obj.xPos;
+    obj.yDest = obj.yPos;
+
+    //Start the swipe from the center of the object
+    startX = this.x + 60;
+    startY = this.y + 60;
+    
     this.events.onInputUp.add(endSwipe, this);  
 }
 
@@ -67,33 +85,29 @@ function endSwipe(obj, pointer){
     var distX = startX-endX;
     var distY = startY-endY;
 
-    if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80 && this.direction === 1){
-        if(distX > 0 && checkLocation(this.xPos, this.yPos, this.xPos-1, this.yPos))
-        {
-            //this.x -= 120;
-            this.xPos--;
-            smoothMovement(this, 1000);
+    //Check to see if the user wants a horizontal swipe and the unit is not moving vertically
+    if(Math.abs(distX)>Math.abs(distY)*2 && Math.abs(distX) > 80 && this.yPos * 120 === this.yDest*120 && this.direction === 1){
+        if(distX > 0 && grid[this.yPos][this.xPos-1] === 0){
+            //Preppare to move the unit by some number of tiles
+            this.xDest -= Math.max(1, Math.floor(distX/120));
         }
-        if (distX < 0 && checkLocation(this.xPos, this.yPos, this.xPos+1, this.yPos))
+        if (distX < 0 && grid[this.yPos][this.xPos+1] === 0)
         {
-            //this.x += 120;
-            this.xPos++;
-            smoothMovement(this, 1000);
+            this.xDest += Math.max(1, Math.floor(-distX/120));
         }
+        
     }
 
-    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80 && this.direction === 0){
-        if(distY>0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos-1))
+    //Check to see if the user wants a vertical swipe and the unit is not moving horizontally
+    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80 && this.x === this.xDest*120 && this.direction === 0){
+        if(distY>0 && grid[this.yPos-1][this.xPos] === 0)
         {
-            //this.y -= 120;
-            this.yPos--;
-            smoothMovement(this, 1000);
+            //Preppare to move the unit by some number of tiles
+            this.yDest -= Math.max(1, Math.floor(distY/120));
         }
-        if(distY<0 && checkLocation(this.xPos, this.yPos, this.xPos, this.yPos+1))
+        if(distY<0 && grid[this.yPos+1][this.xPos] === 0)
         {
-            //this.y += 120;
-            this.yPos++;
-            smoothMovement(this, 1000);
+            this.yDest += Math.max(1, Math.floor(-distY/120));
         }
     }
 
