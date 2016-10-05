@@ -249,5 +249,6 @@ function movementHelper(unit){
 
 function reloadScene()
 {
+    booksFound = 0;
     BookWyrm.game.state.start(BookWyrm.game.state.current);
 }

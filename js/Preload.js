@@ -25,6 +25,6 @@ BookWyrm.Preload.prototype = {
   },
   create: function() {
     //Start the actual Game State
-    this.state.start('Game');
+    this.state.start('Title');
   }
 };

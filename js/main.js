@@ -8,5 +8,6 @@ BookWyrm.game = new Phaser.Game(750, 1334, Phaser.AUTO, '');
 //States are held within their own JavaScript file
 BookWyrm.game.state.add('Boot', BookWyrm.Boot);
 BookWyrm.game.state.add('Preload', BookWyrm.Preload);
+BookWyrm.game.state.add('Title', BookWyrm.Title);
 BookWyrm.game.state.add('Game', BookWyrm.Game);
 BookWyrm.game.state.start('Boot');
