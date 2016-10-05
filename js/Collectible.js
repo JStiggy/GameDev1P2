@@ -40,5 +40,6 @@ function onClickCollectible (obj, pointer)
     {
         grid[obj.yPos][obj.xPos] = 0;
         obj.destroy();
+        booksFound +=1;
     }
 }

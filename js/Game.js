@@ -29,17 +29,39 @@ var exit;
 **/
 
 var grid = [
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0]
 ];
+
+var text1;
+var booksFound = 0;
+
+
+var w = 750, h = 1334;
 
 function create()
 {
+
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     collectibleObjects = BookWyrm.game.add.group();
@@ -54,11 +76,79 @@ function create()
     interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
     interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
     interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
+
+    BookWyrm.game.camera.bounds = new Phaser.Rectangle(0,0,750,2640);
+    BookWyrm.game.camera.follow(player);
+
+    text1 = BookWyrm.game.add.text(20, 1254, "Books Found: ", { font: "25px Arial Black", fill: "#0f0cf2" });
+    text1.stroke = "#1b85e8";
+    text1.strokeThickness = 16;
+    //  Apply the shadow to the Stroke only
+    text1.setShadow(2, 2, "#333333", 2, true, false);
+    text1.fixedToCamera = true;
+
+    // Create a label to use as a button
+    pause_label = BookWyrm.game.add.text(w - 100, 20, 'Pause', { font: '24px Arial', fill: '#fff' });
+    pause_label.fixedToCamera = true;
+    pause_label.inputEnabled = true;
+    pause_label.events.onInputUp.add(function () {
+        // When the paus button is pressed, we pause the game
+        BookWyrm.game.paused = true;
+
+        // Then add the menu
+        menu = BookWyrm.game.add.sprite(BookWyrm.game.camera.x + BookWyrm.game.camera.width/2, BookWyrm.game.camera.y + BookWyrm.game.camera.height/2, 'menu');
+        menu.anchor.setTo(0.5, 0.5);
+        //menu.fixedToCamera = true;
+
+        // And a label to illustrate which menu item was chosen. (This is not necessary)
+        choiseLabel = BookWyrm.game.add.text(BookWyrm.game.camera.x + BookWyrm.game.camera.width/2, BookWyrm.game.camera.y + BookWyrm.game.camera.height-150, 'Click outside menu to continue', { font: '30px Arial', fill: '#fff' });
+        choiseLabel.anchor.setTo(0.5, 0.5);
+        
+    });
+
+    // Add a input listener that can help us return from being paused
+    BookWyrm.game.input.onDown.add(unpause, self);
+
+    // And finally the method that handels the pause menu
+    function unpause(event){
+        // Only act if paused
+        if(BookWyrm.game.paused){
+            // Calculate the corners of the menu
+            var x1 = w/2 - 270/2, x2 = w/2 + 270/2,
+                y1 = h/2 - 180/2, y2 = h/2 + 180/2;
+
+            // Check if the click was inside the menu
+            if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
+                // The choicemap is an array that will help us see which item was clicked
+                var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
+
+                // Get menu local coordinates for the click
+                var x = event.x - x1,
+                    y = event.y - y1;
+
+                // Calculate the choice 
+                var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
+
+                // Display the choice
+                choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
+            }
+            else{
+                // Remove the menu and the label
+                menu.destroy();
+                choiseLabel.destroy();
+
+                // Unpause the game
+                BookWyrm.game.paused = false;
+            }
+        }
+    };
+
 }
 
 function update()
 {
     this.physics.arcade.collide(interactableObjects, interactableObjects); //I dont think this is needed as all interactables should never touch do to grid movement, but its nice to have just incase
+    text1.text = "Books Found: " + booksFound + "/" + collectibleObjects.length;
 }
 
 /*
