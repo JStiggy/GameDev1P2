@@ -103,10 +103,23 @@ function create()
         // When the paus button is pressed, we pause the game
         BookWyrm.game.paused = true;
 
-        // Then add the menu
-        menu = BookWyrm.game.add.sprite(BookWyrm.game.camera.x + BookWyrm.game.camera.width/2, BookWyrm.game.camera.y + BookWyrm.game.camera.height/2, 'menu');
-        menu.anchor.setTo(0.5, 0.5);
-        //menu.fixedToCamera = true;
+        // Create a label to use as a button
+        menu_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75, BookWyrm.game.camera.height/2-50, 'Menu', { font: '62px Arial', fill: '#0f0cf2' });
+        menu_label.stroke = "#1b85e8";
+        menu_label.strokeThickness = 16;
+        //  Apply the shadow to the Stroke only
+        menu_label.setShadow(2, 2, "#333333", 2, true, false);
+        menu_label.fixedToCamera = true;
+        menu_label.inputEnabled = true;
+
+        restart_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75, BookWyrm.game.camera.height/2+30, 'Restart', { font: '62px Arial', fill: '#0f0cf2' });
+        restart_label.stroke = "#1b85e8";
+        restart_label.strokeThickness = 16;
+        //  Apply the shadow to the Stroke only
+        restart_label.setShadow(2, 2, "#333333", 2, true, false);
+        restart_label.fixedToCamera = true;
+        restart_label.inputEnabled = true;
+        
 
         // And a label to illustrate which menu item was chosen. (This is not necessary)
         choiseLabel = BookWyrm.game.add.text(BookWyrm.game.camera.x + BookWyrm.game.camera.width/2, BookWyrm.game.camera.y + BookWyrm.game.camera.height-150, 'Click outside menu to continue', { font: '30px Arial', fill: '#fff' });
@@ -122,28 +135,27 @@ function create()
         // Only act if paused
         if(BookWyrm.game.paused){
             // Calculate the corners of the menu
-            var x1 = w/2 - 270/2, x2 = w/2 + 270/2,
-                y1 = h/2 - 180/2, y2 = h/2 + 180/2;
+            var x1 = BookWyrm.game.camera.width/2-75, x2 = BookWyrm.game.camera.width/2+95;
+            var y1 = BookWyrm.game.camera.height/2-50, y2 = BookWyrm.game.camera.height/2-50+62;
+
+            var x3 = BookWyrm.game.camera.width/2-75, x4 = BookWyrm.game.camera.width/2+120;
+            var y3 = BookWyrm.game.camera.height/2+30, y4 = BookWyrm.game.camera.height/2+30+62;
 
             // Check if the click was inside the menu
             if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
-                // The choicemap is an array that will help us see which item was clicked
-                var choisemap = ['one', 'two', 'three', 'four', 'five', 'six'];
-
-                // Get menu local coordinates for the click
-                var x = event.x - x1,
-                    y = event.y - y1;
-
-                // Calculate the choice 
-                var choise = Math.floor(x / 90) + 3*Math.floor(y / 90);
-
-                // Display the choice
-                choiseLabel.text = 'You chose menu item: ' + choisemap[choise];
+                BookWyrm.game.paused = false;
+                BookWyrm.game.state.start('Title');
+            }
+            else if(event.x > x3 && event.x < x4 && event.y > y3 && event.y < y4 ){
+                BookWyrm.game.paused = false;
+                booksFound = 0;
+                BookWyrm.game.state.start('Game');
             }
             else{
                 // Remove the menu and the label
-                menu.destroy();
+                menu_label.destroy();
                 choiseLabel.destroy();
+                restart_label.destroy();
 
                 // Unpause the game
                 BookWyrm.game.paused = false;
