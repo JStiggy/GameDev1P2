@@ -15,6 +15,9 @@ var interactableObjects;
 //determine the number of books left in the stage
 var collectibleObjects;
 
+//Enemy group
+var enemyObjects;
+
 //Player object used by other objects
 var player;
 var exit;
@@ -66,6 +69,10 @@ function create()
 
     collectibleObjects = BookWyrm.game.add.group();
     collectibleObjects.add(new Collectible(BookWyrm.game, 4, 2));
+
+    enemyObjects = BookWyrm.game.add.group();
+    enemyObjects.add(new Librarian(BookWyrm.game, 1, 1));
+
 
     interactableObjects = BookWyrm.game.add.group();
     interactableObjects.add(exit = new Exit(BookWyrm.game, 0, 5));
@@ -237,4 +244,9 @@ function movementHelper(unit){
 
         smoothMovement(unit,1000);
     }
+}
+
+function reloadScene()
+{
+    BookWyrm.game.state.start(BookWyrm.game.state.current);
 }
