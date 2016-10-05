@@ -33,6 +33,10 @@ var exit;
 
 var grid;
 
+var map;
+var layer1;
+var layer2;
+
 var text1;
 var booksFound = 0;
 
@@ -68,24 +72,63 @@ function create()
 
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    // collectibleObjects = BookWyrm.game.add.group();
+    // collectibleObjects.add(new Collectible(BookWyrm.game, 4, 2));
+
+    // enemyObjects = BookWyrm.game.add.group();
+    // enemyObjects.add(new Librarian(BookWyrm.game, 1, 1));
+
+
+    // interactableObjects = BookWyrm.game.add.group();
+    // interactableObjects.add(exit = new Exit(BookWyrm.game, 0, 5));
+    // interactableObjects.add(new Cart(BookWyrm.game, 5, 1, 1));
+    // interactableObjects.add(new Cart(BookWyrm.game, 0, 0, 0));
+    // interactableObjects.add(new Cart(BookWyrm.game, 3, 3 , 0));
+    // interactableObjects.add(new Chair(BookWyrm.game, 2, 1));
+    // interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
+    // interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
+    // interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
+
+    map = BookWyrm.game.add.tilemap('level1');
+    jsonData = BookWyrm.game.cache.getJSON('level1Data');
+    var tiles = 0;
+    var i = 0;
+    var j = 0;
+    for(i=0; i<22 && tiles < jsonData.layers[1].data.length; ++i)
+    {
+        for(j=0; j<6 && tiles < jsonData.layers[1].data.length; ++j)
+        {
+            if(jsonData.layers[1].data[tiles] !== 0){
+                grid[i][j] = 1;
+            }
+            tiles++;
+        }
+    }
+    //  First value is the name given to the tileset when added to tiled, the second is the
+    map.addTilesetImage('TestTiles', 'gameTiles');
+
+    //Create the two layers for the map
+    //The anchor points seem oddly specific, thats because Phaser has no easy way place tile maps at a certain point
+    //as a result the anchor point is exactly 15 pixels horizontally
+    layer1 = map.createLayer('Tile Layer 1');
+    layer1.anchor.set(-26/1334, 0);
+
+    layer2 = map.createLayer('Tile Layer 2');
+    layer2.anchor.set(-26/1334, 0);
+    
+    BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+    //
+    // Add any objects to groups here
+    //
+
     collectibleObjects = BookWyrm.game.add.group();
-    collectibleObjects.add(new Collectible(BookWyrm.game, 4, 2));
-
     enemyObjects = BookWyrm.game.add.group();
-    enemyObjects.add(new Librarian(BookWyrm.game, 1, 1));
-
-
     interactableObjects = BookWyrm.game.add.group();
-    interactableObjects.add(exit = new Exit(BookWyrm.game, 0, 5));
-    interactableObjects.add(new Cart(BookWyrm.game, 5, 1, 1));
-    interactableObjects.add(new Cart(BookWyrm.game, 0, 0, 0));
-    interactableObjects.add(new Cart(BookWyrm.game, 3, 3 , 0));
-    interactableObjects.add(new Chair(BookWyrm.game, 2, 1));
-    interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
-    interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
-    interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
+    interactableObjects.add(player = new Player(BookWyrm.game, 3, 0));
 
-    BookWyrm.game.camera.bounds = new Phaser.Rectangle(0,0,750,2640);
+    BookWyrm.game.camera.bounds = new Phaser.Rectangle(0,0,750, map.heightInPixels);
+
     BookWyrm.game.camera.follow(player);
 
     text1 = BookWyrm.game.add.text(20, 1254, "Books Found: ", { font: "25px Arial Black", fill: "#0f0cf2" });

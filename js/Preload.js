@@ -12,6 +12,7 @@ BookWyrm.Preload.prototype = {
  
     //Load all Level JSON files
     this.load.tilemap('level1', 'assets/tilemaps/TestMap.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('level1Data', 'assets/tilemaps/TestMap.json');
     
     //Load all art assets
     this.load.image('gameTiles', 'assets/tiles/Tileset.png');
