@@ -8,7 +8,7 @@
 */
 
 Librarian = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120, y*120, 'librarian');
+    Phaser.Sprite.call(this, game, x*120 + 15, y*120, 'librarian');
     //Enable input and physics
     this.inputEnabled = true;
     this.events.onInputDown.add(onClickCollectible, this); 
@@ -31,7 +31,7 @@ Librarian.prototype.update = function()
 {
 
 
-    if(this.yPos * 120 === this.y && this.xPos * 120 === this.x)
+    if(this.yPos * 120 === this.y && (this.xPos * 120 + 15) === this.x)
     {
 
         if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130)

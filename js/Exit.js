@@ -9,7 +9,7 @@
 */
 
 Exit = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120, y*120, 'exit');
+    Phaser.Sprite.call(this, game, x*120 + 15, y*120, 'exit');
     //Enable physics
     BookWyrm.game.physics.enable(this);
 

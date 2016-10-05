@@ -8,7 +8,7 @@
 */
 
 Chair = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120, y*120, 'chair');
+    Phaser.Sprite.call(this, game, x*120+15, y*120, 'chair');
     //Enable input and physics
     this.inputEnabled = true;
     this.events.onInputDown.add(onClickChair, this); 

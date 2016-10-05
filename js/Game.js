@@ -196,11 +196,11 @@ function checkLocation(x, y, xDestination, yDestination)
 
 function smoothMovement(unit, time)
 {
-  BookWyrm.game.add.tween(unit).to( { x: unit.xPos * 120, y: unit.yPos * 120 }, time, Phaser.Easing.linear, true);
+  BookWyrm.game.add.tween(unit).to( { x: unit.xPos * 120 + 15, y: unit.yPos * 120 }, time, Phaser.Easing.linear, true);
 }
 
 function movementHelper(unit){
-   if (unit.xPos !== unit.xDest && unit.xPos * 120 == unit.x && unit.yPos * 120 == unit.y)
+   if (unit.xPos !== unit.xDest && (unit.xPos * 120 + 15) == unit.x && unit.yPos * 120 == unit.y)
     {
         if(unit.xPos < unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos+1, unit.yPos))
         {
@@ -223,7 +223,7 @@ function movementHelper(unit){
         smoothMovement(unit,1000);
     } 
 
-    if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && unit.xPos * 120 == unit.x)
+    if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && (unit.xPos * 120 + 15) == unit.x)
     {
         if(unit.yPos < unit.yDest && checkLocation(unit.xPos, unit.yPos, unit.xPos, unit.yPos+1))
         {

@@ -8,7 +8,7 @@
 */
 
 Player = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120, y*120, 'player');
+    Phaser.Sprite.call(this, game, x*120+15, y*120, 'player');
 
     //Enable input and physics
     this.inputEnabled = true;
@@ -93,7 +93,7 @@ function endSwipePlayer(obj, pointer){
         
     }
     //Check to see if the user wants a vertical swipe and the unit is not moving horizontally
-    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80 && this.x === this.xDest*120){
+    if(Math.abs(distY)>Math.abs(distX)*2 && Math.abs(distY) > 80 && this.x === (this.xDest*120+15) ){
         if(distY>0 && grid[this.yPos-1][this.xPos] === 0)
         {
             //Preppare to move the unit by some number of tiles
