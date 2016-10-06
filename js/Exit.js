@@ -13,11 +13,10 @@ Exit = function (game, x, y) {
     //Enable physics
     BookWyrm.game.physics.enable(this);
 
+    this.currentLevel = level;
     //Used for keeping track of the location in the grid
     this.xPos = x;
     this.yPos = y;
-
-    grid[y][x] = 1;
 
 };
 
@@ -26,8 +25,10 @@ Exit.prototype.constructor = Exit;
 
 Exit.prototype.update = function() 
 {
-    if ( Phaser.Math.distance(this.x + 60, this.y + 60, player.x + 60, player.y + 60) < 130 && (collectibleObjects.length === 0) )
-    {
-        console.log("Level Exit");
+    if ( Phaser.Math.distance(this.x + 60, this.y + 60, player.x + 60, player.y + 60) < 10 && (collectibleObjects.length === 0) )
+    {             
+        BookWyrm.game.camera.fade(0x000000,500);
+        BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
+        level = this.currentLevel + 1;
     } 
 }

@@ -18,6 +18,7 @@ Librarian = function (game, x, y) {
     this.xPos = x;
     this.yPos = y;
 
+    //The number of miliseconds it takes the actor to move 1 tile (120 pixels)
     this.movementSpeed = 1500;
 
     //These are reversed as it makes the array much more user friendly for level building and debugging

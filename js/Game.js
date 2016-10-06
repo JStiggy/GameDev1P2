@@ -20,7 +20,6 @@ var enemyObjects;
 
 //Player object used by other objects
 var player;
-var exit;
 
 /**
 * This is the grid representing the level. As objects are added to the level, 
@@ -36,6 +35,9 @@ var grid;
 var map;
 var layer1;
 var layer2;
+var level = 1;
+
+var border;
 
 var text1;
 var booksFound = 0;
@@ -45,6 +47,11 @@ var w = 750, h = 1334;
 
 function create()
 {
+    border = this.game.add.graphics(0, 0);        
+    border.beginFill(0x670A0A, 1);        
+    border.drawRect(0, 0, BookWyrm.game.width, BookWyrm.game.height);                
+    border.endFill();   
+
     grid = [
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0],
@@ -89,23 +96,11 @@ function create()
     // interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
     // interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
 
-    map = BookWyrm.game.add.tilemap('level1');
-    jsonData = BookWyrm.game.cache.getJSON('level1Data');
-    var tiles = 0;
-    var i = 0;
-    var j = 0;
-    for(i=0; i<22 && tiles < jsonData.layers[1].data.length; ++i)
-    {
-        for(j=0; j<6 && tiles < jsonData.layers[1].data.length; ++j)
-        {
-            if(jsonData.layers[1].data[tiles] !== 0){
-                grid[i][j] = 1;
-            }
-            tiles++;
-        }
-    }
+    map = BookWyrm.game.add.tilemap('level' + level.toString());
+    jsonData = BookWyrm.game.cache.getJSON('level'+level.toString()+'Data');
+
     //  First value is the name given to the tileset when added to tiled, the second is the
-    map.addTilesetImage('TestTiles', 'gameTiles');
+    map.addTilesetImage(jsonData.tilesets[0].name, 'gameTiles');
 
     //Create the two layers for the map
     //The anchor points seem oddly specific, thats because Phaser has no easy way place tile maps at a certain point
@@ -116,16 +111,56 @@ function create()
     layer2 = map.createLayer('Tile Layer 2');
     layer2.anchor.set(-26/1334, 0);
     
-    BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
-
     //
-    // Add any objects to groups here
+    // Add any objects for groups here
     //
 
     collectibleObjects = BookWyrm.game.add.group();
     enemyObjects = BookWyrm.game.add.group();
     interactableObjects = BookWyrm.game.add.group();
-    interactableObjects.add(player = new Player(BookWyrm.game, 3, 0));
+
+    var tiles = 0;
+    var i = 0;
+    var j = 0;
+    for(i=0; i<22 && tiles < jsonData.layers[1].data.length; ++i)
+    {
+        for(j=0; j<6 && tiles < jsonData.layers[1].data.length; ++j)
+        {
+            if(jsonData.layers[1].data[tiles] !== 0)
+            {
+                grid[i][j] = 1;
+            }
+            if(jsonData.layers[2].data[tiles] !== 0)
+            {
+                switch(jsonData.layers[2].data[tiles]){
+                    case 2:
+                        enemyObjects.add(new Librarian(BookWyrm.game,j,i));
+                        break;
+                    case 3:
+                        collectibleObjects.add(new Collectible(BookWyrm.game,j,i,0));
+                        break;
+                    case 4:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,0));
+                        break;
+                    case 5:
+                        interactableObjects.add(player = new Player(BookWyrm.game,j,i));
+                        break;
+                    case 8:
+                        interactableObjects.add(new Chair(BookWyrm.game,j,i));
+                        break;
+                    case 9:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,1));
+                        break;
+                    case 10:
+                        interactableObjects.add(new Exit(BookWyrm.game,j,i));
+                        break;
+                }
+            }
+            tiles++;
+        }
+    }
+
+    BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     BookWyrm.game.camera.bounds = new Phaser.Rectangle(0,0,750, map.heightInPixels);
 
@@ -206,10 +241,20 @@ function create()
         }
     };
 
+    var spr_bg = this.game.add.graphics(0, 0);        
+    spr_bg.beginFill(0x000000, 1);        
+    spr_bg.drawRect(0, 0, BookWyrm.game.width, BookWyrm.game.height);        
+    spr_bg.alpha = 1;        
+    spr_bg.endFill();     
+    var s = this.game.add.tween(spr_bg);        
+    s.to({ alpha: 0 }, 500, null);   
+    s.start();
 }
 
 function update()
 {
+    border.x = BookWyrm.game.camera.x;
+    border.y = BookWyrm.game.camera.y;
     this.physics.arcade.collide(interactableObjects, interactableObjects); //I dont think this is needed as all interactables should never touch do to grid movement, but its nice to have just incase
     text1.text = "Books Found: " + booksFound + "/" + collectibleObjects.length;
 }
