@@ -50,6 +50,7 @@ function onClickChair (obj, pointer)
     startX = BookWyrm.game.input.worldX;
     startY = BookWyrm.game.input.worldY;
     this.events.onInputUp.add(endSwipeChair, this);  
+    this.sound = BookWyrm.game.add.audio("chairPush", 1, false);
 }
 
 /*
@@ -96,6 +97,13 @@ function endSwipeChair(obj, pointer){
             this.yPos++;
             smoothMovement(this, this.movememntSpeed);
         }
+    }
+
+    if(!this.canMove)
+    {
+        this.sound.play();
+        this.events.onInputDown.remove(onClickChair, this); 
+        this.inputEnabled = false;
     }
 
     this.events.onInputUp.remove(endSwipeChair, this);

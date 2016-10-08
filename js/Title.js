@@ -10,7 +10,12 @@ BookWyrm.Title.prototype = {
 
 function create()
 {
-	console.log("title screen");
+    BookWyrm.music.stop();
+    BookWyrm.music = BookWyrm.game.add.audio('title', 1, true);
+    BookWyrm.music.onDecoded.add(function() {BookWyrm.music.fadeIn(1500);}, this);
+  
+    var group = BookWyrm.game.add.group();
+    group.add(new TextBox(BookWyrm.game, ["a","b","c","d","a","b","c","d","a","b","c","d"], 'Game'));  
 
     // Create a label to use as a button
     play_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-65, BookWyrm.game.camera.height/2, 'Play', { font: '62px Arial', fill: '#0f0cf2' });
@@ -23,19 +28,19 @@ function create()
     play_label.inputEnabled = true;
     play_label.events.onInputUp.add(function () {
         // When the play button is pressed, we start the game
-        BookWyrm.game.state.start('Game');
+        BookWyrm.game.camera.fade(0x000000,500);
+        BookWyrm.music.fadeOut(500);
+
+        BookWyrm.music = BookWyrm.game.add.audio('game', 1, true);
+        BookWyrm.music.fadeIn(1000);
+        BookWyrm.menuSound.play("", 0, 1, false, true);
+        BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Game')}, this);
+        
         
     });
-
-    
-    
-
 }
 
 function update()
 {
     
 }
-
-
-

@@ -12,15 +12,16 @@ TextBox = function (game, txtArray, state) {
     
     //Array of all text
     this.textAray = txtArray;
-
     //Advance the text at most 3 lines at a time, when all text has been depleted the state is changed
     this.advance = function()
     {
+        BookWyrm.menuSound.play("", 0, 1, false, true);
         var i = 0;
         this.rawText = '';
         if(i+this.displayValue >= txtArray.length)
         {
-            BookWyrm.game.state.start(this.stateToChange);
+            BookWyrm.game.camera.fade(0x000000,500);
+            BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start(this.stateToChange)}, this);
         }
 
         for(i = 0; i < 3 && (this.displayValue + i) < txtArray.length; ++i)

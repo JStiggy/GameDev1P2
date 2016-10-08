@@ -23,6 +23,8 @@ Librarian = function (game, x, y) {
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.sound = BookWyrm.game.add.audio("lose", 1, false);
 };
 
 Librarian.prototype = Object.create(Phaser.Sprite.prototype);
@@ -31,12 +33,12 @@ Librarian.prototype.constructor = Librarian;
 Librarian.prototype.update = function()
 {
 
-
     if(this.yPos * 120 === this.y && (this.xPos * 120 + 15) === this.x)
     {
 
-        if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130)
+        if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130 && !this.sound.isPlaying)
         {
+            this.sound.play();
             BookWyrm.game.camera.fade(0x000000,500);
             BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
         }

@@ -20,6 +20,8 @@ Collectible = function (game, x, y) {
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.sound = BookWyrm.game.add.audio("collectible", 1, false);
 };
 
 Collectible.prototype = Object.create(Phaser.Sprite.prototype);
@@ -38,6 +40,7 @@ function onClickCollectible (obj, pointer)
 {
     if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130)
     {
+        obj.sound.play();
         grid[obj.yPos][obj.xPos] = 0;
         obj.destroy();
         booksFound +=1;

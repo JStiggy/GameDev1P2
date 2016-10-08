@@ -32,6 +32,9 @@ Cart = function (game, x, y, d) {
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.sound = BookWyrm.game.add.audio("cartPush", 1, true);
+    this.sound.onFadeComplete.add(function() {this.stop();});
 };
 
 Cart.prototype = Object.create(Phaser.Sprite.prototype);
@@ -39,6 +42,14 @@ Cart.prototype.constructor = Cart;
 
 Cart.prototype.update = function() 
 {
+    if((this.x !== this.xDest*120+15  || this.yDest*120 !== this.y) && !this.sound.isPlaying)
+    {
+        this.sound.play("", 0, 1, true, true);
+    } 
+    else if (this.x === this.xDest*120+15 && this.yDest*120 === this.y && this.sound.isPlaying)
+    {
+        this.sound.fadeOut(500);
+    }
     movementHelper(this);
 }
 

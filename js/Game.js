@@ -79,23 +79,6 @@ function create()
 
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // collectibleObjects = BookWyrm.game.add.group();
-    // collectibleObjects.add(new Collectible(BookWyrm.game, 4, 2));
-
-    // enemyObjects = BookWyrm.game.add.group();
-    // enemyObjects.add(new Librarian(BookWyrm.game, 1, 1));
-
-
-    // interactableObjects = BookWyrm.game.add.group();
-    // interactableObjects.add(exit = new Exit(BookWyrm.game, 0, 5));
-    // interactableObjects.add(new Cart(BookWyrm.game, 5, 1, 1));
-    // interactableObjects.add(new Cart(BookWyrm.game, 0, 0, 0));
-    // interactableObjects.add(new Cart(BookWyrm.game, 3, 3 , 0));
-    // interactableObjects.add(new Chair(BookWyrm.game, 2, 1));
-    // interactableObjects.add(new Chair(BookWyrm.game, 2, 2));
-    // interactableObjects.add(new Chair(BookWyrm.game, 0, 2));
-    // interactableObjects.add(player = new Player(BookWyrm.game, 5, 5));
-
     map = BookWyrm.game.add.tilemap('level' + level.toString());
     jsonData = BookWyrm.game.cache.getJSON('level'+level.toString()+'Data');
 
@@ -221,10 +204,12 @@ function create()
 
             // Check if the click was inside the menu
             if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
+                BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
                 BookWyrm.game.state.start('Title');
             }
             else if(event.x > x3 && event.x < x4 && event.y > y3 && event.y < y4 ){
+                BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
                 booksFound = 0;
                 BookWyrm.game.state.start('Game');
@@ -234,7 +219,7 @@ function create()
                 menu_label.destroy();
                 choiseLabel.destroy();
                 restart_label.destroy();
-
+                BookWyrm.menuSound.play("", 0, 1, false, true);
                 // Unpause the game
                 BookWyrm.game.paused = false;
             }

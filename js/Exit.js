@@ -18,6 +18,8 @@ Exit = function (game, x, y) {
     this.xPos = x;
     this.yPos = y;
 
+    this.sound = BookWyrm.game.add.audio("levelClear");
+
 };
 
 Exit.prototype = Object.create(Phaser.Sprite.prototype);
@@ -27,8 +29,13 @@ Exit.prototype.update = function()
 {
     if ( Phaser.Math.distance(this.x + 60, this.y + 60, player.x + 60, player.y + 60) < 10 && (collectibleObjects.length === 0) )
     {             
-        BookWyrm.game.camera.fade(0x000000,500);
+        BookWyrm.game.camera.fade(0x000000,1000);
         BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
         level = this.currentLevel + 1;
+        if(!this.sound.isPlaying)
+        {
+            this.sound.play();
+        }
+        
     } 
 }

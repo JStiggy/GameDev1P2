@@ -26,6 +26,7 @@ BookWyrm.Preload.prototype = {
     this.load.image('book', 'assets/tiles/Book.png');
     this.load.image('exit', 'assets/tiles/Exit.png');
     this.load.image('librarian', 'assets/tiles/Librarian.png');
+    this.load.image('textbox', 'assets/TextBox.png');
 
     this.load.image('cBL', 'assets/tiles/Children Section/BottomLeft.png');
     this.load.image('cBR', 'assets/tiles/Children Section/BottomRight.png');
@@ -38,9 +39,21 @@ BookWyrm.Preload.prototype = {
     this.load.image('cTR', 'assets/tiles/Children Section/TopRight.png');
     this.load.image('cTVE', 'assets/tiles/Children Section/TopVerticalEnd.png');
     this.load.image('cVM', 'assets/tiles/Children Section/VerticalMiddle.png');
+
+    this.load.audio('title', ['assets/music/Cave Story.ogg']);
+    this.load.audio('game', ['assets/music/On to Grasstown.ogg']);
+
+    this.load.audio('collectible', ['assets/sfx/MH Gathering Sound.ogg']);
+    this.load.audio('cartPush', ['assets/sfx/MH Notification.ogg']);
+    this.load.audio('chairPush', ['assets/sfx/MH First Combine.ogg']);
+    this.load.audio('levelClear', ['assets/sfx/DW3 Victory.ogg'])
+    this.load.audio('lose', ['assets/sfx/MH Chest.ogg']);
+    this.load.audio('menu', ['assets/sfx/8bSaveTing.ogg']);
   },
   create: function() {
     //Start the actual Game State
+    BookWyrm.music = BookWyrm.game.add.audio('title');
+    BookWyrm.menuSound = BookWyrm.game.add.audio('menu');
     this.state.start('Title');
   }
 };
