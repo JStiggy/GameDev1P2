@@ -27,6 +27,7 @@ BookWyrm.Preload.prototype = {
     this.load.image('exit', 'assets/tiles/Exit.png');
     this.load.image('librarian', 'assets/tiles/Librarian.png');
     this.load.image('textbox', 'assets/TextBox.png');
+    this.load.image('star', 'assets/star.png');
 
     this.load.image('cBL', 'assets/tiles/Children Section/BottomLeft.png');
     this.load.image('cBR', 'assets/tiles/Children Section/BottomRight.png');
@@ -46,7 +47,7 @@ BookWyrm.Preload.prototype = {
     this.load.audio('collectible', ['assets/sfx/MH Gathering Sound.ogg']);
     this.load.audio('cartPush', ['assets/sfx/MH Notification.ogg']);
     this.load.audio('chairPush', ['assets/sfx/MH First Combine.ogg']);
-    this.load.audio('levelClear', ['assets/sfx/DW3 Victory.ogg'])
+    this.load.audio('levelClear', ['assets/sfx/DW3 Victory.ogg']);
     this.load.audio('lose', ['assets/sfx/MH Chest.ogg']);
     this.load.audio('menu', ['assets/sfx/8bSaveTing.ogg']);
   },
@@ -54,6 +55,7 @@ BookWyrm.Preload.prototype = {
     //Start the actual Game State
     BookWyrm.music = BookWyrm.game.add.audio('title');
     BookWyrm.menuSound = BookWyrm.game.add.audio('menu');
-    this.state.start('Title');
+    BookWyrm.music.onDecoded.add(function() {BookWyrm.game.state.start('Title');}, this);
+    
   }
 };

@@ -165,7 +165,7 @@ function create()
         BookWyrm.game.paused = true;
 
         // Create a label to use as a button
-        menu_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75, BookWyrm.game.camera.height/2-50, 'Menu', { font: '62px Arial', fill: '#0f0cf2' });
+        menu_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2-50 + BookWyrm.game.camera.y, 'Menu', { font: '62px Arial', fill: '#0f0cf2' });
         menu_label.stroke = "#1b85e8";
         menu_label.strokeThickness = 16;
         //  Apply the shadow to the Stroke only
@@ -173,7 +173,7 @@ function create()
         menu_label.fixedToCamera = true;
         menu_label.inputEnabled = true;
 
-        restart_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75, BookWyrm.game.camera.height/2+30, 'Restart', { font: '62px Arial', fill: '#0f0cf2' });
+        restart_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2+30 + BookWyrm.game.camera.y, 'Restart', { font: '62px Arial', fill: '#0f0cf2' });
         restart_label.stroke = "#1b85e8";
         restart_label.strokeThickness = 16;
         //  Apply the shadow to the Stroke only

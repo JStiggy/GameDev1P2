@@ -8,7 +8,7 @@
 */
 
 Collectible = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120 + 15, y*120, 'book');
+    Phaser.Sprite.call(this, game, x*120 + 75, y*120 + 60, 'book');
     //Enable input and physics
     this.inputEnabled = true;
     this.events.onInputDown.add(onClickCollectible, this); 
@@ -17,9 +17,24 @@ Collectible = function (game, x, y) {
     //Used for keeping track of the location in the grid
     this.xPos = x;
     this.yPos = y;
+    this.angle = -45;
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.anchor.set(.5);
+
+    this.emitter = BookWyrm.game.add.emitter(this.x, this.y, 15);
+    this.emitter.makeParticles('star');
+    this.emitter.gravity = 0;
+    this.emitter.setAlpha(1, 0, 1600);
+
+
+    this.tweenR = game.add.tween(this).to( { angle: 45 }, 2000, Phaser.Easing.Exponential.In, true);
+    this.tweenL = game.add.tween(this).to( { angle: -45 }, 2000, Phaser.Easing.Exponential.In, false);
+
+    this.tweenR.onComplete.add(function(){this.tweenL.start()}, this);
+    this.tweenL.onComplete.add(function(){this.tweenR.start()}, this);
 
     this.sound = BookWyrm.game.add.audio("collectible", 1, false);
 };
@@ -38,11 +53,14 @@ Collectible.prototype.constructor = Collectible;
 
 function onClickCollectible (obj, pointer)
 {
-    if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130)
+    if(Phaser.Math.distance(this.x, this.y, player.x+60,player.y+60) < 130)
     {
+        obj.emitter.start(true, 1500, 50, 15);
         obj.sound.play();
+        obj.alpha = 0;
         grid[obj.yPos][obj.xPos] = 0;
-        obj.destroy();
+        obj.inputEnabled = false
         booksFound +=1;
+        BookWyrm.game.time.events.add(1600, function(){obj.destroy();})
     }
 }
