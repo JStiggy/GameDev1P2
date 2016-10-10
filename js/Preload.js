@@ -41,15 +41,15 @@ BookWyrm.Preload.prototype = {
     this.load.image('cTVE', 'assets/tiles/Children Section/TopVerticalEnd.png');
     this.load.image('cVM', 'assets/tiles/Children Section/VerticalMiddle.png');
 
-    this.load.audio('title', ['assets/music/Cave Story.ogg']);
-    this.load.audio('game', ['assets/music/On to Grasstown.ogg']);
+    this.load.audio('title', ['assets/music/ES_Childrens_Game_3_-_Anders_M_rlin_.ogg']);
+    this.load.audio('game', ['assets/music/ES_Childrens_Game_4_-_Anders_M_rlin_.ogg']);
 
-    this.load.audio('collectible', ['assets/sfx/MH Gathering Sound.ogg']);
-    this.load.audio('cartPush', ['assets/sfx/MH Notification.ogg']);
-    this.load.audio('chairPush', ['assets/sfx/MH First Combine.ogg']);
-    this.load.audio('levelClear', ['assets/sfx/DW3 Victory.ogg']);
-    this.load.audio('lose', ['assets/sfx/MH Chest.ogg']);
-    this.load.audio('menu', ['assets/sfx/8bSaveTing.ogg']);
+    this.load.audio('collectible', ['assets/sfx/pickup.ogg']);
+    this.load.audio('cartPush', ['assets/sfx/foley_mirror_no_frame_drag_on_table_001.ogg']);
+    this.load.audio('chairPush', ['assets/sfx/household_chair_wooden_scraping_on_floor.ogg']);
+    this.load.audio('levelClear', ['assets/sfx/household_window_double_glazed_shut.ogg']);
+    this.load.audio('lose', ['assets/sfx/enemyhit.ogg']);
+    this.load.audio('menu', ['assets/sfx/sound_Button_Tick.ogg']);
   },
   create: function() {
     //Start the actual Game State
