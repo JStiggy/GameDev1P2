@@ -27,6 +27,11 @@ Player = function (game, x, y) {
     this.yDest = y;
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.animations.add("down", [0,1,2,3,4], 2, false);
+    this.animations.add("left", [5,6,7,8,9], 2, false);
+    this.animations.add("right", [10, 11, 12, 13, 14], 2, false);
+    this.animations.add("up", [15, 16,17,18,19], 2, false);
 };
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -35,6 +40,7 @@ Player.prototype.constructor = Player;
 Player.prototype.update = function() 
 {
     movementHelper(this);
+    //animationHelper(this);
 }
 
 //Values used for swiping

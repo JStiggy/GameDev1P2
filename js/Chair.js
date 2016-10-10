@@ -26,10 +26,20 @@ Chair = function (game, x, y) {
 
     //These are reversed as it makes the array much more user friendly for level building and debugging
     grid[y][x] = 1;
+
+    this.sound = BookWyrm.game.add.audio("chairPush", 1, false);
 };
 
 Chair.prototype = Object.create(Phaser.Sprite.prototype);
 Chair.prototype.constructor = Chair;
+
+Chair.prototype.update = function ()
+{
+    if(this.x === this.xPos*120+15 && this.y === this.yPos*120 && this.sound.isPlaying)
+    {
+        this.sound.stop();
+    }
+}
 
 //Values used for swiping
 var startX;
@@ -50,7 +60,6 @@ function onClickChair (obj, pointer)
     startX = BookWyrm.game.input.worldX;
     startY = BookWyrm.game.input.worldY;
     this.events.onInputUp.add(endSwipeChair, this);  
-    this.sound = BookWyrm.game.add.audio("chairPush", 1, false);
 }
 
 /*

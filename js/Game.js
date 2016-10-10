@@ -285,15 +285,19 @@ function smoothMovement(unit, time)
 }
 
 function movementHelper(unit){
-   if (unit.xPos !== unit.xDest && (unit.xPos * 120 + 15) == unit.x && unit.yPos * 120 == unit.y)
+    if (unit.xPos !== unit.xDest && (unit.xPos * 120 + 15) == unit.x && unit.yPos * 120 == unit.y)
     {
         if(unit.xPos < unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos+1, unit.yPos))
-        {
+        { 
             unit.xPos++;
         } 
         else if (unit.xPos < unit.xDest && grid[unit.yPos][unit.xPos+1] === 1)
         {
             unit.xDest = unit.xPos;
+        }
+        else
+        {
+            unit.animations.play("right");  
         }
 
         if(unit.xPos > unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos-1, unit.yPos))
@@ -304,14 +308,20 @@ function movementHelper(unit){
         {
             unit.xDest = unit.xPos;
         }
+        else
+        {
+            unit.animations.play("left");  
+        }
 
         smoothMovement(unit,1000);
+        animationHelper(unit);
     } 
 
     if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && (unit.xPos * 120 + 15) == unit.x)
     {
         if(unit.yPos < unit.yDest && checkLocation(unit.xPos, unit.yPos, unit.xPos, unit.yPos+1))
         {
+            unit.animations.play("down");  
             unit.yPos++;
         } 
         else if (unit.yPos < unit.yDest && grid[unit.yPos+1][unit.xPos] === 1)
@@ -321,6 +331,7 @@ function movementHelper(unit){
 
         if(unit.yPos > unit.yDest && checkLocation(unit.xPos, unit.yPos, unit.xPos, unit.yPos-1))
         {
+            unit.animations.play("up");  
             unit.yPos--;
         } 
         else if (unit.yPos > unit.yDest && grid[unit.yPos-1][unit.xPos] === 1)
@@ -329,6 +340,7 @@ function movementHelper(unit){
         }
 
         smoothMovement(unit,1000);
+        animationHelper(unit);
     }
 }
 
