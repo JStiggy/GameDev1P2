@@ -7,8 +7,8 @@
 *
 */
 
-Collectible = function (game, x, y) {
-    Phaser.Sprite.call(this, game, x*120 + 75, y*120 + 60, 'book');
+Collectible = function (game, x, y, i) {
+    Phaser.Sprite.call(this, game, x*120 + 75, y*120 + 60, 'book' +i.toString());
     //Enable input and physics
     this.inputEnabled = true;
     this.events.onInputDown.add(onClickCollectible, this); 

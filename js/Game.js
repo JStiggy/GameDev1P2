@@ -36,7 +36,7 @@ var grid;
 var map;
 var layer1;
 var layer2;
-var level = 1;
+var level = 3;
 
 var border;
 
@@ -127,7 +127,8 @@ function create()
             if(jsonData.layers[2].data[tiles] !== 0)
             {
                 switch(jsonData.layers[2].data[tiles]){
-                    
+                    case 0:
+                        break;
                     case 40:
                         interactableObjects.add(new Cart(BookWyrm.game,j,i,1,1));
                         break;
@@ -157,6 +158,12 @@ function create()
                         break;
                     case 49:
                         interactableObjects.add(player = new Player(BookWyrm.game,j,i));
+                        break;
+                    case 50:
+                        collectibleObjects.add(new Collectible(BookWyrm.game,j,i,12));
+                        break;
+                    default:
+                        collectibleObjects.add(new Collectible(BookWyrm.game,j,i,jsonData.layers[2].data[tiles]));
                         break;
                 }
             }

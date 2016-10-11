@@ -11,11 +11,14 @@ BookWyrm.Preload.prototype = {
     this.load.setPreloadSprite(this.preloadBar);
  
     //Load all Level JSON files
-    this.load.tilemap('level1', 'assets/tilemaps/TestMap1.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.json('level1Data', 'assets/tilemaps/TestMap1.json');
+    this.load.tilemap('level1', 'assets/tilemaps/Level1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('level1Data', 'assets/tilemaps/Level1.json');
 
-    this.load.tilemap('level2', 'assets/tilemaps/TestMap2.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.json('level2Data', 'assets/tilemaps/TestMap2.json');
+    this.load.tilemap('level2', 'assets/tilemaps/Level2.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('level2Data', 'assets/tilemaps/Level2.json');
+
+    this.load.tilemap('level3', 'assets/tilemaps/Level3.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('level3Data', 'assets/tilemaps/Level3.json');
 
     //Load all art assets
     this.load.image('gameTiles', 'assets/tiles/Tileset.png');
@@ -26,11 +29,21 @@ BookWyrm.Preload.prototype = {
     this.load.image('chair1', 'assets/tiles/ChairA.png');
     this.load.image('chair2', 'assets/tiles/ChairC.png');
     this.load.spritesheet('player', 'assets/tiles/Player.png', 120, 120);
-    this.load.image('book', 'assets/tiles/Book.png');
     this.load.image('exit', 'assets/tiles/Exit.png');
     this.load.spritesheet('librarian', 'assets/tiles/Librarian.png', 120, 120);
     this.load.image('textbox', 'assets/TextBox.png');
     this.load.image('star', 'assets/star.png');
+
+    for(var i = 0; i < 13; ++i)
+    {
+        this.load.image('book' + i.toString(), 'assets/tiles/Book' + i.toString() + '.png');
+    }
+
+    this.load.image('start', 'assets/tiles/UI/start.png');
+    this.load.image('menu', 'assets/tiles/UI/menu.png');
+    this.load.image('restart', 'assets/tiles/UI/restart.png');
+    this.load.image('pause', 'assets/tiles/UI/pause.png');
+    this.load.image('pMenu', 'assets/tiles/UI/pause_menu.png');
 
     this.load.audio('title', ['assets/music/ES_Childrens_Game_3_-_Anders_M_rlin_.ogg']);
     this.load.audio('game', ['assets/music/ES_Childrens_Game_4_-_Anders_M_rlin_.ogg']);
