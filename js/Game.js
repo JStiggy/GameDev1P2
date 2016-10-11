@@ -36,7 +36,7 @@ var grid;
 var map;
 var layer1;
 var layer2;
-var level = 3;
+var level = 1;
 
 var border;
 
