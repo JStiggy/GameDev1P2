@@ -6,7 +6,7 @@ BookWyrm.Boot = function(){};
 BookWyrm.Boot.prototype = {
   preload: function() {
     //Sets up a loading bar, renders portions of the image
-    this.load.image('preloadbar', 'assets/tiles/cartH.png');
+    this.load.image('preloadbar', 'assets/tiles/CartHC.png');
   },
   create: function() {
     this.game.stage.backgroundColor = '#000000';

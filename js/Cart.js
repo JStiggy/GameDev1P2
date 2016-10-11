@@ -8,8 +8,8 @@
 *
 */
 
-Cart = function (game, x, y, d) {
-    Phaser.Sprite.call(this, game, x*120+15, y*120, 'cart' + d.toString());
+Cart = function (game, x, y, d, i) {
+    Phaser.Sprite.call(this, game, x*120+15, y*120, 'cart' + i.toString());
     
     //Enable input and physics
     this.inputEnabled = true;

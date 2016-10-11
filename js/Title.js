@@ -17,7 +17,7 @@ function create()
     BookWyrm.music.fadeIn(1500);
 
     var buttonGroup = BookWyrm.game.add.group();
-    buttonGroup.add(new GameButton(BookWyrm.game, BookWyrm.game.camera.width/2-65, BookWyrm.game.camera.height/2, 'chair' , 
+    buttonGroup.add(new GameButton(BookWyrm.game, BookWyrm.game.camera.width/2-65, BookWyrm.game.camera.height/2, 'chair1' , 
         function () {
             BookWyrm.game.camera.fade(0x000000,500);
             BookWyrm.music.fadeOut(500);

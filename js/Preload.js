@@ -11,25 +11,26 @@ BookWyrm.Preload.prototype = {
     this.load.setPreloadSprite(this.preloadBar);
  
     //Load all Level JSON files
-    this.load.tilemap('level1', 'assets/tilemaps/TestMap.json', null, Phaser.Tilemap.TILED_JSON);
-    this.load.json('level1Data', 'assets/tilemaps/TestMap.json');
+    this.load.tilemap('level1', 'assets/tilemaps/TestMap1.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('level1Data', 'assets/tilemaps/TestMap1.json');
 
     this.load.tilemap('level2', 'assets/tilemaps/TestMap2.json', null, Phaser.Tilemap.TILED_JSON);
     this.load.json('level2Data', 'assets/tilemaps/TestMap2.json');
 
     //Load all art assets
     this.load.image('gameTiles', 'assets/tiles/Tileset.png');
-    this.load.image('cart0', 'assets/tiles/CartV.png');
-    this.load.image('cart1', 'assets/tiles/CartH.png');
-    this.load.image('chair', 'assets/tiles/Chair.png');
+    this.load.image('cart2', 'assets/tiles/CartVA.png');
+    this.load.image('cart1', 'assets/tiles/CartHA.png');
+    this.load.image('cart3', 'assets/tiles/CartVC.png');
+    this.load.image('cart4', 'assets/tiles/CartHC.png');
+    this.load.image('chair1', 'assets/tiles/ChairA.png');
+    this.load.image('chair2', 'assets/tiles/ChairC.png');
     this.load.spritesheet('player', 'assets/tiles/Player.png', 120, 120);
     this.load.image('book', 'assets/tiles/Book.png');
     this.load.image('exit', 'assets/tiles/Exit.png');
-    this.load.image('librarian', 'assets/tiles/Librarian.png');
+    this.load.spritesheet('librarian', 'assets/tiles/Librarian.png', 120, 120);
     this.load.image('textbox', 'assets/TextBox.png');
     this.load.image('star', 'assets/star.png');
-
-    this.load.image('tileset', 'assets/tiles/Children Section/Objects_Sheer.png');
 
     this.load.audio('title', ['assets/music/ES_Childrens_Game_3_-_Anders_M_rlin_.ogg']);
     this.load.audio('game', ['assets/music/ES_Childrens_Game_4_-_Anders_M_rlin_.ogg']);

@@ -25,6 +25,17 @@ Librarian = function (game, x, y) {
     grid[y][x] = 1;
 
     this.sound = BookWyrm.game.add.audio("lose", 1, false);
+
+    this.animations.add("down", [0, 1, 2, 3, 4, 5, 6, 7], 4, true);
+    this.animations.add("left", [8, 9, 10, 11, 12, 13, 14, 15], 4, true);
+    this.animations.add("right", [16, 17, 18, 19, 20, 21, 22, 23], 4, true);
+    this.animations.add("up", [24, 25, 26, 27, 28, 29, 30, 31], 4, true);
+
+    this.idle = false;
+    this.animations.add("downI", [0], 4, false);
+    this.animations.add("leftI", [8], 4, false);
+    this.animations.add("rightI", [16], 4, false);
+    this.animations.add("upI", [24], 4, false);
 };
 
 Librarian.prototype = Object.create(Phaser.Sprite.prototype);
@@ -32,10 +43,10 @@ Librarian.prototype.constructor = Librarian;
 
 Librarian.prototype.update = function()
 {
-
+    //If the enemy is/has finished moving to the current tile
     if(this.yPos * 120 === this.y && (this.xPos * 120 + 15) === this.x)
     {
-
+        //Reset the stage if the plasyer is close to the librarian
         if(Phaser.Math.distance(this.x +60, this.y + 60, player.x+60,player.y+60) < 130 && !this.sound.isPlaying)
         {
             this.sound.play();
@@ -43,18 +54,41 @@ Librarian.prototype.update = function()
             BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
         }
 
+        //Use A* pathfinding to locate the player
         var currentPath = [];
         grid[player.yPos][player.xPos] = 0;
         currentPath = this.findPath(grid,[this.xPos,this.yPos],[player.xPos,player.yPos]);
         grid[player.yPos][player.xPos] = 1;
+
+        //If possible move 1 tile towards the player
         if(currentPath.length > 1 && checkLocation(this.xPos, this.yPos, currentPath[1][0], currentPath[1][1]))
         {
+            this.idle = false;
+            animationHelper(this, currentPath);
             this.xPos = currentPath[1][0];
             this.yPos = currentPath[1][1];
             smoothMovement(this, this.movementSpeed);
         }
+        else
+        {
+            //The librarian has been trapped, play the idle animation
+            if(!this.idle)
+            {
+                this.animations.play(this.animations.name + "I");
+            }
+            this.idle = true;
+        }
     }
 }
+
+/*
+* Smoothly move a unit from its current position to it's destination position
+*
+* @param world 2D Array representing the map of the game world
+* @param pathStart Array of [x, y] for the start of the path
+* @param pathEnd Array of [x, y] for the end of the path
+*
+*/
 
 Librarian.prototype.findPath = function (world, pathStart, pathEnd)
 {
@@ -199,3 +233,41 @@ Librarian.prototype.findPath = function (world, pathStart, pathEnd)
     return calculatePath();
 }
 
+/*
+* Smoothly move a unit from its current position to it's destination position
+*
+* @param unit The current unit to animate
+* @param currentPath The path the enemy is currently taking
+*
+*/
+function animationHelper(unit, currentPath){
+
+
+    if (unit.xPos !== unit.xDest && (unit.xPos * 120 + 15) == unit.x && unit.yPos * 120 == unit.y)
+    {
+        if(unit.xPos < currentPath[1][0])
+        { 
+            unit.xPos++;
+            unit.animations.play("right"); 
+        } 
+
+        if(unit.xPos > currentPath[1][0])
+        {
+            unit.xPos--;
+            unit.animations.play("left"); 
+        } 
+    } 
+
+    if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && (unit.xPos * 120 + 15) == unit.x)
+    {
+        if(unit.yPos < currentPath[1][1])
+        {
+            unit.animations.play("down");  
+        } 
+
+        if(unit.yPos > currentPath[1][1])
+        {
+            unit.animations.play("up");  
+        } 
+    }
+}

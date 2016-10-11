@@ -32,6 +32,7 @@ var player;
 
 var grid;
 
+//Data used to represent the current level
 var map;
 var layer1;
 var layer2;
@@ -47,11 +48,13 @@ var w = 750, h = 1334;
 
 function create()
 {
+    //Add a 15 pixel border to the sides of the screen
     border = this.game.add.graphics(0, 0);        
     border.beginFill(0x670A0A, 1);        
     border.drawRect(0, 0, BookWyrm.game.width, BookWyrm.game.height);                
     border.endFill();   
 
+    //Initialize the grid as empty
     grid = [
       [0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0],
@@ -79,6 +82,13 @@ function create()
 
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    //When the playter beats the 3 game levels go to the you win screen
+    if(level === 4)
+    {
+        console.log("Go to other screen");
+    }
+
+    //Load all the map data into the game
     map = BookWyrm.game.add.tilemap('level' + level.toString());
     jsonData = BookWyrm.game.cache.getJSON('level'+level.toString()+'Data');
 
@@ -102,6 +112,7 @@ function create()
     enemyObjects = BookWyrm.game.add.group();
     interactableObjects = BookWyrm.game.add.group();
 
+    //Iterate though all the map data to create collisions and add objects to the game
     var tiles = 0;
     var i = 0;
     var j = 0;
@@ -116,26 +127,36 @@ function create()
             if(jsonData.layers[2].data[tiles] !== 0)
             {
                 switch(jsonData.layers[2].data[tiles]){
-                    case 2:
-                        enemyObjects.add(new Librarian(BookWyrm.game,j,i));
+                    
+                    case 40:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,1,1));
                         break;
-                    case 3:
+                    case 41:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,0,2));
+                        break;
+                    case 42:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,0,3));
+                        break;
+                    case 43:
+                        interactableObjects.add(new Cart(BookWyrm.game,j,i,1,4));
+                        break;   
+                    case 44:
+                        interactableObjects.add(new Chair(BookWyrm.game,j,i,1));
+                        break;
+                    case 45:
+                        interactableObjects.add(new Chair(BookWyrm.game,j,i,2));
+                        break;
+                    case 46:
                         collectibleObjects.add(new Collectible(BookWyrm.game,j,i,0));
                         break;
-                    case 4:
-                        interactableObjects.add(new Cart(BookWyrm.game,j,i,0));
-                        break;
-                    case 5:
-                        interactableObjects.add(player = new Player(BookWyrm.game,j,i));
-                        break;
-                    case 8:
-                        interactableObjects.add(new Chair(BookWyrm.game,j,i));
-                        break;
-                    case 9:
-                        interactableObjects.add(new Cart(BookWyrm.game,j,i,1));
-                        break;
-                    case 10:
+                    case 47:
                         interactableObjects.add(new Exit(BookWyrm.game,j,i));
+                        break;
+                    case 48:
+                        enemyObjects.add(new Librarian(BookWyrm.game,j,i));
+                        break;
+                    case 49:
+                        interactableObjects.add(player = new Player(BookWyrm.game,j,i));
                         break;
                 }
             }
@@ -143,10 +164,9 @@ function create()
         }
     }
 
+    //Set the camera to follow the player vertically
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
-
     BookWyrm.game.camera.bounds = new Phaser.Rectangle(0,0,750, map.heightInPixels);
-
     BookWyrm.game.camera.follow(player);
 
     text1 = BookWyrm.game.add.text(20, 1254, "Books Found: ", { font: "25px Arial Black", fill: "#0f0cf2" });
@@ -240,7 +260,6 @@ function update()
 {
     border.x = BookWyrm.game.camera.x;
     border.y = BookWyrm.game.camera.y;
-    this.physics.arcade.collide(interactableObjects, interactableObjects); //I dont think this is needed as all interactables should never touch do to grid movement, but its nice to have just incase
     text1.text = "Books Found: " + booksFound + "/" + collectibleObjects.length;
 }
 
@@ -284,37 +303,39 @@ function smoothMovement(unit, time)
   BookWyrm.game.add.tween(unit).to( { x: unit.xPos * 120 + 15, y: unit.yPos * 120 }, time, Phaser.Easing.linear, true);
 }
 
+
+/*
+* Handle movement for all player controlled actors, move 1 tile every movementspeed milliseconds
+*
+* @param unit The unit that will be moved
+*
+*/
+
 function movementHelper(unit){
     if (unit.xPos !== unit.xDest && (unit.xPos * 120 + 15) == unit.x && unit.yPos * 120 == unit.y)
     {
+
         if(unit.xPos < unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos+1, unit.yPos))
         { 
             unit.xPos++;
+            unit.animations.play("right"); 
         } 
         else if (unit.xPos < unit.xDest && grid[unit.yPos][unit.xPos+1] === 1)
         {
             unit.xDest = unit.xPos;
         }
-        else
-        {
-            unit.animations.play("right");  
-        }
 
         if(unit.xPos > unit.xDest && checkLocation(unit.xPos, unit.yPos, unit.xPos-1, unit.yPos))
         {
             unit.xPos--;
+            unit.animations.play("left"); 
         } 
         else if (unit.xPos > unit.xDest && grid[unit.yPos][unit.xPos-1] === 1)
         {
             unit.xDest = unit.xPos;
         }
-        else
-        {
-            unit.animations.play("left");  
-        }
 
-        smoothMovement(unit,1000);
-        animationHelper(unit);
+        smoothMovement(unit, unit.movementSpeed);
     } 
 
     if (unit.yPos !== unit.yDest && unit.yPos * 120 == unit.y && (unit.xPos * 120 + 15) == unit.x)
@@ -339,10 +360,13 @@ function movementHelper(unit){
             unit.yDest = unit.yPos;
         }
 
-        smoothMovement(unit,1000);
-        animationHelper(unit);
+        smoothMovement(unit, unit.movementSpeed);
     }
 }
+
+/*
+* Reload the current scene, this is used for reloading to get a new map, on defeat, on reset
+*/
 
 function reloadScene()
 {
