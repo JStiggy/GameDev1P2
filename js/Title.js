@@ -10,14 +10,18 @@ BookWyrm.Title.prototype = {
 
 function create()
 {
+    //logo
+    BookWyrm.game.add.sprite(BookWyrm.game.camera.width/2-190, 250, 'logo');
+
 
 
     BookWyrm.music.stop();
     BookWyrm.music = BookWyrm.game.add.audio('title', 1, true);
     BookWyrm.music.fadeIn(1500);
 
+    //play button
     var buttonGroup = BookWyrm.game.add.group();
-    buttonGroup.add(new GameButton(BookWyrm.game, BookWyrm.game.camera.width/2-65, BookWyrm.game.camera.height/2, 'chair1' , 
+    buttonGroup.add(new GameButton(BookWyrm.game, BookWyrm.game.camera.width/2, BookWyrm.game.camera.height/2+200, 'start' , 
         function () {
             BookWyrm.game.camera.fade(0x000000,500);
             BookWyrm.music.fadeOut(500);

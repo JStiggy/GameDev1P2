@@ -39,6 +39,7 @@ BookWyrm.Preload.prototype = {
         this.load.image('book' + i.toString(), 'assets/tiles/Book' + i.toString() + '.png');
     }
 
+    this.load.image('logo', 'assets/logo3.png')
     this.load.image('start', 'assets/tiles/UI/start.png');
     this.load.image('menu', 'assets/tiles/UI/menu.png');
     this.load.image('restart', 'assets/tiles/UI/restart.png');
