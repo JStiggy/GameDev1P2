@@ -142,10 +142,10 @@ function create()
                         interactableObjects.add(new Cart(BookWyrm.game,j,i,1,4));
                         break;   
                     case 44:
-                        interactableObjects.add(new Chair(BookWyrm.game,j,i,1));
+                        interactableObjects.add(new Chair(BookWyrm.game,j,i,2));
                         break;
                     case 45:
-                        interactableObjects.add(new Chair(BookWyrm.game,j,i,2));
+                        interactableObjects.add(new Chair(BookWyrm.game,j,i,1));
                         break;
                     case 46:
                         collectibleObjects.add(new Collectible(BookWyrm.game,j,i,0));
