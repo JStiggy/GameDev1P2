@@ -275,7 +275,7 @@ function update()
 
     border.x = BookWyrm.game.camera.x;
     border.y = BookWyrm.game.camera.y;
-    text1.text = "Books Found: " + booksFound + "/" + collectibleObjects.length;
+    text1.text = "Books Found: " + booksFound + "/" + (collectibleObjects.length+booksFound);
 }
 
 /*
