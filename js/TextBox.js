@@ -8,8 +8,11 @@
 */
 
 TextBox = function (game, txtArray, state) {
-    Phaser.Sprite.call(this, game, 0, 1034, 'textbox');
+    Phaser.Sprite.call(this, game, 0, 1034, 'pMenu');
     
+    this.width = 750;
+    this.height = 300;
+
     //Array of all text
     this.textAray = txtArray;
     //Advance the text at most 3 lines at a time, when all text has been depleted the state is changed
@@ -34,7 +37,7 @@ TextBox = function (game, txtArray, state) {
 
     //Setup for the text to be displayed
     this.rawText = '';
-    this.displayText = BookWyrm.game.add.text(this.x + 25, this.y + 30 , this.rawText, { font: '32px Arial', fill: '#0f0cf2' });
+    this.displayText = BookWyrm.game.add.text(this.x + 75, this.y + 60 , this.rawText, { font: '32px Arial', fill: '#0f0cf2' });
     this.displayText.stroke = "#1b85e8";
     this.displayText.strokeThickness = 16;
     this.displayValue = 0;
