@@ -22,7 +22,7 @@ function create()
 
 
     BookWyrm.music.stop();
-    BookWyrm.music = BookWyrm.game.add.audio('title', 1, true);
+    BookWyrm.music = BookWyrm.game.add.audio('title', 0, 1, true);
     BookWyrm.music.fadeIn(1500);
 
     //play button
@@ -32,7 +32,7 @@ function create()
             BookWyrm.game.camera.fade(0x000000,500);
             BookWyrm.music.fadeOut(500);
 
-            BookWyrm.music = BookWyrm.game.add.audio('game', 1, true);
+            BookWyrm.music = BookWyrm.game.add.audio('game', 0, 1, true);
             BookWyrm.music.fadeIn(1000);
             BookWyrm.menuSound.play("", 0, 1, false, true);
             BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Intro')}, this);
