@@ -38,9 +38,9 @@ TextBox = function (game, txtArray, state) {
 
     //Setup for the text to be displayed
     this.rawText = '';
-    this.displayText = BookWyrm.game.add.text(this.x + 75, this.y + 60 , this.rawText, { font: '32px Arial', fill: '#0f0cf2' });
-    this.displayText.stroke = "#1b85e8";
-    this.displayText.strokeThickness = 16;
+    this.displayText = BookWyrm.game.add.text(this.x + 75, this.y + 60 , this.rawText, { font: '32px Arial', fill: '#000000' });
+    this.displayText.stroke = "#000000";
+    this.displayText.strokeThickness = 2;
     this.displayValue = 0;
 
     //State to change the game to
