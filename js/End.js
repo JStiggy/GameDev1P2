@@ -13,6 +13,7 @@ var	currentStill = 4;
 
 function create()
 {
+    BookWyrm.music.loop = true;
 
 	cutsceneStills = 4;
 	currentStill = 4;

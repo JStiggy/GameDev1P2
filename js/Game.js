@@ -48,6 +48,8 @@ var w = 750, h = 1334;
 
 function create()
 {
+    BookWyrm.music.loop = true;
+
     //Add a 15 pixel border to the sides of the screen
     border = this.game.add.graphics(0, 0);        
     border.beginFill(0x670A0A, 1);        

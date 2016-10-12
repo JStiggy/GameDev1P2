@@ -13,6 +13,8 @@ var	currentStill = 1;
 
 function create()
 {
+    BookWyrm.music.loop = true;
+    
 	cutsceneStills = 3;
 	currentStill = 1;
 	cutsceneImage = BookWyrm.game.add.sprite(0, 0, 'still' + currentStill.toString());

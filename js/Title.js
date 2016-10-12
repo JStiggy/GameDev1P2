@@ -10,6 +10,8 @@ BookWyrm.Title.prototype = {
 
 function create()
 {
+    BookWyrm.music.loop = true;
+    
     //background image
     bck = BookWyrm.game.add.sprite(0,0,'still4')
     //logo
@@ -35,6 +37,7 @@ function create()
             BookWyrm.music.fadeOut(500);
 
             BookWyrm.music = BookWyrm.game.add.audio('game', 0, 1, true);
+            BookWyrm.music.play('', 0, 1, true);
             BookWyrm.music.fadeIn(1000);
             BookWyrm.menuSound.play("", 0, 1, false, true);
             BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Intro')}, this);
