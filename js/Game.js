@@ -48,6 +48,11 @@ var w = 750, h = 1334;
 
 function create()
 {
+    BookWyrm.music.fadeOut(500);
+
+    BookWyrm.music = BookWyrm.game.add.audio('game', 0, 1, true);
+    BookWyrm.music.play('', 0, 1, true);
+    BookWyrm.music.fadeIn(1000);
     BookWyrm.music.loop = true;
 
     //Add a 15 pixel border to the sides of the screen
@@ -260,6 +265,14 @@ function create()
 
 function update()
 {
+
+    if(!BookWyrm.music.isPlaying)
+    {
+        console.log("")
+        BookWyrm.music = BookWyrm.game.add.audio('game', 0, 1, true);
+        BookWyrm.music.play('', 0, 1, true);
+    }
+
     border.x = BookWyrm.game.camera.x;
     border.y = BookWyrm.game.camera.y;
     text1.text = "Books Found: " + booksFound + "/" + collectibleObjects.length;
