@@ -256,14 +256,7 @@ function create()
         }
     };
 
-    var spr_bg = this.game.add.graphics(0, 0);        
-    spr_bg.beginFill(0x000000, 1);        
-    spr_bg.drawRect(0, 0, BookWyrm.game.width, BookWyrm.game.height);        
-    spr_bg.alpha = 1;        
-    spr_bg.endFill();     
-    var s = this.game.add.tween(spr_bg);        
-    s.to({ alpha: 0 }, 500, null);   
-    s.start();
+    BookWyrm.game.camera.flash(0x000000, 1000);
 }
 
 function update()
