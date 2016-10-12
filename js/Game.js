@@ -184,27 +184,29 @@ function create()
     text1.fixedToCamera = true;
 
     // Create a label to use as a button
-    pause_label = BookWyrm.game.add.text(w - 100, 20, 'Pause', { font: '24px Arial', fill: '#fff' });
+    pause_label = BookWyrm.game.add.sprite(w - 100, 7, 'pause');
     pause_label.fixedToCamera = true;
     pause_label.inputEnabled = true;
     pause_label.events.onInputUp.add(function () {
         // When the paus button is pressed, we pause the game
         BookWyrm.game.paused = true;
 
+        pback = BookWyrm.game.add.sprite(BookWyrm.game.camera.x-5, BookWyrm.game.camera.height/2-350 + BookWyrm.game.camera.y, 'pMenu')
+
         // Create a label to use as a button
-        menu_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2-50 + BookWyrm.game.camera.y, 'Menu', { font: '62px Arial', fill: '#0f0cf2' });
-        menu_label.stroke = "#1b85e8";
-        menu_label.strokeThickness = 16;
-        //  Apply the shadow to the Stroke only
-        menu_label.setShadow(2, 2, "#333333", 2, true, false);
+        menu_label = BookWyrm.game.add.sprite(BookWyrm.game.camera.width/2-135 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2-150 + BookWyrm.game.camera.y, 'menu');
+        // menu_label.stroke = "#1b85e8";
+        // menu_label.strokeThickness = 16;
+        // //  Apply the shadow to the Stroke only
+        // menu_label.setShadow(2, 2, "#333333", 2, true, false);
         menu_label.fixedToCamera = true;
         menu_label.inputEnabled = true;
 
-        restart_label = BookWyrm.game.add.text(BookWyrm.game.camera.width/2-75 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2+30 + BookWyrm.game.camera.y, 'Restart', { font: '62px Arial', fill: '#0f0cf2' });
-        restart_label.stroke = "#1b85e8";
-        restart_label.strokeThickness = 16;
-        //  Apply the shadow to the Stroke only
-        restart_label.setShadow(2, 2, "#333333", 2, true, false);
+        restart_label = BookWyrm.game.add.sprite(BookWyrm.game.camera.width/2-220 + BookWyrm.game.camera.x, BookWyrm.game.camera.height/2+30 + BookWyrm.game.camera.y, 'restart');
+        // restart_label.stroke = "#1b85e8";
+        // restart_label.strokeThickness = 16;
+        // //  Apply the shadow to the Stroke only
+        // restart_label.setShadow(2, 2, "#333333", 2, true, false);
         restart_label.fixedToCamera = true;
         restart_label.inputEnabled = true;
         
@@ -223,11 +225,11 @@ function create()
         // Only act if paused
         if(BookWyrm.game.paused){
             // Calculate the corners of the menu
-            var x1 = BookWyrm.game.camera.width/2-75, x2 = BookWyrm.game.camera.width/2+95;
-            var y1 = BookWyrm.game.camera.height/2-50, y2 = BookWyrm.game.camera.height/2-50+62;
+            var x1 = BookWyrm.game.camera.width/2-135, x2 = BookWyrm.game.camera.width/2+150;
+            var y1 = BookWyrm.game.camera.height/2-150, y2 = BookWyrm.game.camera.height/2-50+62;
 
-            var x3 = BookWyrm.game.camera.width/2-75, x4 = BookWyrm.game.camera.width/2+120;
-            var y3 = BookWyrm.game.camera.height/2+30, y4 = BookWyrm.game.camera.height/2+30+62;
+            var x3 = BookWyrm.game.camera.width/2-220, x4 = BookWyrm.game.camera.width/2+210;
+            var y3 = BookWyrm.game.camera.height/2+30, y4 = BookWyrm.game.camera.height/2+30+120;
 
             // Check if the click was inside the menu
             if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
@@ -243,6 +245,7 @@ function create()
             }
             else{
                 // Remove the menu and the label
+                pback.destroy();
                 menu_label.destroy();
                 choiseLabel.destroy();
                 restart_label.destroy();
