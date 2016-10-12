@@ -11,5 +11,7 @@ BookWyrm.menuSound;
 BookWyrm.game.state.add('Boot', BookWyrm.Boot);
 BookWyrm.game.state.add('Preload', BookWyrm.Preload);
 BookWyrm.game.state.add('Title', BookWyrm.Title);
+BookWyrm.game.state.add('Intro', BookWyrm.Intro);
 BookWyrm.game.state.add('Game', BookWyrm.Game);
+BookWyrm.game.state.add('End', BookWyrm.End);
 BookWyrm.game.state.start('Boot');

@@ -29,9 +29,18 @@ Exit.prototype.update = function()
 {
     if ( Phaser.Math.distance(this.x + 60, this.y + 60, player.x + 60, player.y + 60) < 10 && (collectibleObjects.length === 0) )
     {             
-        BookWyrm.game.camera.fade(0x000000,1000);
-        BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
         level = this.currentLevel + 1;
+        if(level === 4)
+        {
+            level = 1;
+            BookWyrm.game.camera.fade(0x000000,500);
+            BookWyrm.game.camera.onFadeComplete.add(function() {BookWyrm.game.state.start('End');}, this);
+        } 
+        else
+        {
+            BookWyrm.game.camera.fade(0x000000,1000);
+            BookWyrm.game.camera.onFadeComplete.add(reloadScene, this);
+        }
         if(!this.sound.isPlaying)
         {
             this.sound.play();

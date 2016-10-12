@@ -235,13 +235,15 @@ function create()
             if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
                 BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
-                BookWyrm.game.state.start('Title');
+                 BookWyrm.game.camera.fade(0x000000,500);
+                BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Title')}, this);
             }
             else if(event.x > x3 && event.x < x4 && event.y > y3 && event.y < y4 ){
                 BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
                 booksFound = 0;
-                BookWyrm.game.state.start('Game');
+                BookWyrm.game.camera.fade(0x000000,500);
+                BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Game')}, this);
             }
             else{
                 // Remove the menu and the label
