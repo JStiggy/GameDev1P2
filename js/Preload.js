@@ -33,7 +33,12 @@ BookWyrm.Preload.prototype = {
     this.load.spritesheet('librarian', 'assets/tiles/Librarian.png', 120, 120);
     this.load.image('star', 'assets/star.png');
 
-    for(var i = 0; i < 13; ++i)
+    var i;
+    for (i = 1; i < 5; ++i) {
+        this.load.image('still'+ i.toString(), 'assets/Still' + i.toString() +'.png');
+    }
+
+    for(i = 0; i < 13; ++i)
     {
         this.load.image('book' + i.toString(), 'assets/tiles/Book' + i.toString() + '.png');
     }

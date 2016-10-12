@@ -9,21 +9,22 @@
 
 TextBox = function (game, txtArray, state) {
     Phaser.Sprite.call(this, game, 0, 1034, 'pMenu');
-    
+    this.fade = false;
     this.width = 750;
     this.height = 300;
 
     //Array of all text
-    this.textAray = txtArray;
+    this.textArray = txtArray;
     //Advance the text at most 3 lines at a time, when all text has been depleted the state is changed
     this.advance = function()
     {
         BookWyrm.menuSound.play("", 0, 1, false, true);
         var i = 0;
         this.rawText = '';
-        if(i+this.displayValue >= txtArray.length)
+        if(i+this.displayValue >= txtArray.length && !this.fade)
         {
-            BookWyrm.game.camera.fade(0x000000,500);
+            this.fade = true
+            BookWyrm.game.camera.fade(0x000000, 500, true);
             BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start(this.stateToChange)}, this);
         }
 
@@ -49,9 +50,18 @@ TextBox = function (game, txtArray, state) {
     this.advance();
 
     // Enable input
-    this.events.onInputDown.add(this.advance, this); 
+    BookWyrm.game.input.onDown.add(this.advance, this); 
     this.inputEnabled = true;
 };
 
 TextBox.prototype = Object.create(Phaser.Sprite.prototype);
 TextBox.prototype.constructor = TextBox;
+
+TextBox.prototype.update = function()
+{
+    if( this.displayValue > this.textArray.length +1 && ! this.fade)
+    {
+        BookWyrm.game.camera.fade(0x000000,500);
+        BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start(this.stateToChange)}, this);
+    }
+}

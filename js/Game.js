@@ -82,12 +82,6 @@ function create()
 
     BookWyrm.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    //When the playter beats the 3 game levels go to the you win screen
-    if(level === 4)
-    {
-        console.log("Go to other screen");
-    }
-
     //Load all the map data into the game
     map = BookWyrm.game.add.tilemap('level' + level.toString());
     jsonData = BookWyrm.game.cache.getJSON('level'+level.toString()+'Data');
@@ -163,6 +157,7 @@ function create()
                         collectibleObjects.add(new Collectible(BookWyrm.game,j,i,12));
                         break;
                     default:
+                        //Catch all for the remaining book types in the game
                         collectibleObjects.add(new Collectible(BookWyrm.game,j,i,jsonData.layers[2].data[tiles]));
                         break;
                 }
@@ -235,14 +230,14 @@ function create()
             if(event.x > x1 && event.x < x2 && event.y > y1 && event.y < y2 ){
                 BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
-                 BookWyrm.game.camera.fade(0x000000,500);
+                 BookWyrm.game.camera.fade(0x000000,500, true);
                 BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Title')}, this);
             }
             else if(event.x > x3 && event.x < x4 && event.y > y3 && event.y < y4 ){
                 BookWyrm.menuSound.play("", 0, 1, false, true);
                 BookWyrm.game.paused = false;
                 booksFound = 0;
-                BookWyrm.game.camera.fade(0x000000,500);
+                BookWyrm.game.camera.fade(0x000000,500, true);
                 BookWyrm.game.camera.onFadeComplete.add( function() {BookWyrm.game.state.start('Game')}, this);
             }
             else{
